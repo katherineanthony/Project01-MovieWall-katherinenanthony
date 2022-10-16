@@ -37,6 +37,11 @@ public class Actor {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     public ArrayList<Movie> getMovies() {
         // print out the movies that the actor has been in
         ArrayList<Movie> movies = new ArrayList<>();

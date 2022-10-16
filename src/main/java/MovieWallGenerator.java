@@ -54,8 +54,8 @@ public class MovieWallGenerator {
                     if (actor.getName() != null) {
                         numActors++;
                         actors.add(actor);
-                        System.out.println("actor name: " + actor.getName());
-                        System.out.println("actor movies: " + actor.getMovies());
+                        //System.out.println("actor name: " + actor.getName());
+                        //System.out.println("actor movies: " + actor.getMovies());
                     }
                 }
                 numMovies++; // we get the correct values of movies
@@ -75,6 +75,16 @@ public class MovieWallGenerator {
     public static void main(String[] args) throws FileNotFoundException {
         String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
         readFile(filePath);
+
+        for (int i = 0; i < actors.size(); i++) {
+            System.out.println(actors.get(i));
+            System.out.println(actors.get(i).getMovies());
+        }
+
+        /*
+        - I THINK THE PROBLEM IS WITH ADDING THE MOVIE TO A PERSON
+         */
+
         //System.out.println(actors);
         /*Scanner scanner = new Scanner(System.in);
         //System.out.println("Enter an actor's name: ");
