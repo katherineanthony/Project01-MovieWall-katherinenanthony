@@ -19,6 +19,7 @@ public class Actor {
 
     public void addMovie(Movie movie) {
         movies.add(movie);
+        System.out.println("movie: " + movies);
     }
 
     public void setName(String name) {
@@ -36,8 +37,9 @@ public class Actor {
         return null;
     }
 
-    public ArrayList<Movie> getMovies(ArrayList<Movie> movies) {
+    public ArrayList<Movie> getMovies() {
         // print out the movies that the actor has been in
+        ArrayList<Movie> movies = new ArrayList<>();
         for (int i = 0; i < this.movies.size(); i++) {
             movies.add(this.movies.get(i));
         }

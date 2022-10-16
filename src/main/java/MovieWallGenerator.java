@@ -19,49 +19,43 @@ public class MovieWallGenerator {
             String line = br.readLine();
             while (line != null) {
                 String[] title = line.split(",");
-                // this gets you the movie title at value[1]
-                //System.out.println(title[1]); // this is the movie title
                 movies.add(numMovies, title[1]); // add movie to array at index of movie #
 
                 for (int i = 0; i < title.length; i++) {
                     String[] part = title[i].split(",");
-                    //System.out.println(Arrays.toString(part));
+                    Actor actor = new Actor();
                     for (int j = 0; j < part.length; j++) {
-                        Actor actor = new Actor();
-                        //System.out.println(part[j]);
+                        actor = new Actor();
                         if (part[j].contains("character")) {
-                            //System.out.println("part at j: " + j + " : " + part[j]);
-                            // how do you get what is after??
                             int index = part[j].indexOf(":");
                             String temp = part[j].substring(index + 4);
                             String role;
                             if (temp.contains("\"")) {
                                 role = temp.substring(0, temp.indexOf("\""));
-                                //System.out.println("role: " + role);
                             } else {
                                 role = part[j].substring(index + 4, part[j].length() - 2);
-                                //System.out.println("role: " + role);
                             }
                             Movie movie = new Movie(title[1], role);
-                            actor.addMovie(movie);
-                            //System.out.println(actor.getMovie(role));
+                            if (movie != null) {
+                                actor.addMovie(movie);
+                            }
                         } else if (part[j].contains("name")) {
                             int index = part[j].indexOf(":");
                             String temp = part[j].substring(index + 4, part[j].length() - 2);
                             String name;
                             if (temp.contains("\"")) {
                                 name = temp.substring(0, temp.indexOf("\""));
-                                //System.out.println("name: " + name);
                             } else {
                                 name = part[j].substring(index + 4, part[j].length() - 2);
-                                //System.out.println("name: " + name);
                             }
                             actor.setName(name);
                         }
-                        if (actor.getName() != null) {
-                            numActors++;
-                            actors.add(actor);
-                        }
+                    }
+                    if (actor.getName() != null) {
+                        numActors++;
+                        actors.add(actor);
+                        System.out.println("actor name: " + actor.getName());
+                        System.out.println("actor movies: " + actor.getMovies());
                     }
                 }
                 numMovies++; // we get the correct values of movies
@@ -76,22 +70,14 @@ public class MovieWallGenerator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //System.out.println(numMovies);
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        // read file
-        // take user input and search movie wall
-        /*Movie movie = new Movie("Unbearable", "Himself");
-        Actor actor = new Actor("Nicolas Cage");
-        actor.addMovie(movie);
-        System.out.println(actor.getMovie("Himself"));*/
-
-        String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01/src/main/resources/tmdb_5000_credits.csv";
+        String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
         readFile(filePath);
         //System.out.println(actors);
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter an actor's name: ");
+        /*Scanner scanner = new Scanner(System.in);
+        //System.out.println("Enter an actor's name: ");
 
         String actor = scanner.nextLine();
         System.out.println(actor);
@@ -109,7 +95,7 @@ public class MovieWallGenerator {
         }
         else {
             System.out.println("There are no movies with this actor. Did you mean: ");
-        }
+        }*/
     }
 }
 
