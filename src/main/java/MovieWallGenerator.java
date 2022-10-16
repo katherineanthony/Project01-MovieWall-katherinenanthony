@@ -8,25 +8,27 @@ import java.util.Scanner;
 
 public class MovieWallGenerator {
 
-    private static ArrayList<Actor> actors = new ArrayList<>();
-    private static ArrayList<String> movies = new ArrayList<>();
-
-    public static void readFile(String filePath) {
+    public static void readFile(String filePath, ArrayList<Actor> actors, ArrayList<String> movies) {
         int numMovies = 0;
-        int numActors = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
             while (line != null) {
                 String[] title = line.split(",");
                 movies.add(numMovies, title[1]); // add movie to array at index of movie #
+                //System.out.println(Arrays.toString(title));
 
                 for (int i = 0; i < title.length; i++) {
                     String[] part = title[i].split(",");
                     Actor actor = new Actor();
+                    Movie movie = new Movie();
+                    /* TODO: i think there's a problem with the naming of the actor/scope. the using
+                    or lifetime of Actor is not sustainable because it doesn't live throughout
+                    the finding of character and name.
+                     */
                     for (int j = 0; j < part.length; j++) {
-                        actor = new Actor();
-                        if (part[j].contains("character")) {
+                        //actor = new Actor();
+                        if (part[j].contains("character") || part[j].contains("job")) {
                             int index = part[j].indexOf(":");
                             String temp = part[j].substring(index + 4);
                             String role;
@@ -35,10 +37,12 @@ public class MovieWallGenerator {
                             } else {
                                 role = part[j].substring(index + 4, part[j].length() - 2);
                             }
-                            Movie movie = new Movie(title[1], role);
-                            if (movie != null) {
-                                actor.addMovie(movie);
-                            }
+                            //Movie movie = new Movie(title[1], role);
+                            movie.setTitle(title[1]);
+                            movie.setRole(role);
+                            actor.addMovie(movie); // this works to some extent
+                            System.out.print("added Movie: "); // BUT WHERE DOES THE MOVIE GO ??
+                            actor.getMovies();
                         } else if (part[j].contains("name")) {
                             int index = part[j].indexOf(":");
                             String temp = part[j].substring(index + 4, part[j].length() - 2);
@@ -50,12 +54,11 @@ public class MovieWallGenerator {
                             }
                             actor.setName(name);
                         }
-                    }
-                    if (actor.getName() != null) {
-                        numActors++;
-                        actors.add(actor);
-                        //System.out.println("actor name: " + actor.getName());
-                        //System.out.println("actor movies: " + actor.getMovies());
+                        if (actor.getName() != null) {
+                            actors.add(actor);
+                            actor.getMovies();
+                            actor = new Actor();
+                        }
                     }
                 }
                 numMovies++; // we get the correct values of movies
@@ -73,13 +76,22 @@ public class MovieWallGenerator {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
+        ArrayList<Actor> actors = new ArrayList<>();
+        ArrayList<String> movies = new ArrayList<>();
         String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
-        readFile(filePath);
+        readFile(filePath, actors, movies);
+        //System.out.println(movies.get(1));
+        //System.out.println(actors.get(1));
 
-        for (int i = 0; i < actors.size(); i++) {
+        /*for (int i = 0; i < actors.size(); i++) {
             System.out.println(actors.get(i));
-            System.out.println(actors.get(i).getMovies());
-        }
+            actors.get(i).getMovies();
+            //System.out.println(actors.get(i).getMovies());
+        }*/
+        //for (int i = 0; i < movies.size(); i++)
+        //    System.out.println(movies.get(i));
+        //System.out.println(movies.size());
+        //System.out.println(actors.size());
 
         /*
         - I THINK THE PROBLEM IS WITH ADDING THE MOVIE TO A PERSON

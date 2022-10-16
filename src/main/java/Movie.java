@@ -20,6 +20,14 @@ public class Movie {
         this.title = title;
     }
 
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
     public void setRole(String role) {
         this.role = role;
     }
