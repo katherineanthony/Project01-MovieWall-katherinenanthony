@@ -18,15 +18,13 @@ public class MovieWallGenerator {
             String line = br.readLine();
             line = br.readLine();
             while (line != null) {
-
                 String[] title = line.split(",");
                 movies.add(numMovies, title[1]); // add movie to array at index of movie #
-                //System.out.println(Arrays.toString(title));
-
+                Movie movie = new Movie(); // does this need to be moved?
                 for (int i = 0; i < title.length; i++) {
                     //String[] part = title[i].split(",");
-                    Actor actor = new Actor();
-                    Movie movie = new Movie();
+                    Actor actor = new Actor(); // is this in the wrong spot?
+
                     if (title[i].contains("character") || title[i].contains("job")) {
                         int index = title[i].indexOf(":");
                         String temp = title[i].substring(index + 4);
@@ -36,12 +34,9 @@ public class MovieWallGenerator {
                         } else {
                             role = title[i].substring(index + 4, title[i].length() - 2);
                         }
-
                         movie.setTitle(title[1]);
                         movie.setRole(role);
                         actor.addMovie(movie); // this works to some extent
-
-                        //actor.getMovies();
                     } else if (title[i].contains("name")) {
                         int index = title[i].indexOf(":");
                         String temp = title[i].substring(index + 4, title[i].length() - 2);
@@ -52,11 +47,9 @@ public class MovieWallGenerator {
                             name = title[i].substring(index + 4, title[i].length() - 2);
                         }
                         actor.setName(name);
-                        System.out.println(actor.toString());
-                    }
-                    if (actor.getName() != null) {
-                        actors.add(actor);
                         //actor.getMovies();
+                        //System.out.println("movie: " + movie);
+                        actors.add(actor);
                         actor = null;
                     }
                 }
