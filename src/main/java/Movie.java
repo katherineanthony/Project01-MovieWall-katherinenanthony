@@ -22,10 +22,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+        return "Movie: " + title + " as " + role;
     }
 
     public void setRole(String role) {

@@ -28,6 +28,14 @@ public class MovieWallGenerator {
                 movies.add(numMovies, title[1]); // add movie to array at index of movie #
                 Movie movie = new Movie(); // does this need to be moved?
                 Actor actor = new Actor(); // is this in the wrong spot?
+
+                // TODO: how do you keep the same actor while trying to find the character?
+                // options:
+                /*
+                - change how we split the line? (maybe at commas within the line, but after
+                    the title we can do braces?)
+                 */
+
                 for (int i = 0; i < title.length; i++) {
                     if (title[i].contains("character") || title[i].contains("job")) {
                         int index = title[i].indexOf(":");
@@ -41,7 +49,7 @@ public class MovieWallGenerator {
                         movie.setTitle(title[1]);
                         movie.setRole(role);
                         actor.addMovie(movie); // this works to some extent
-                    } else if (title[i].contains("name")) {
+                    } else if (title[i].contains("name")) { // getting the name is accurate !
                         int index = title[i].indexOf(":");
                         String temp = title[i].substring(index + 4, title[i].length() - 2);
                         String name;
@@ -71,12 +79,15 @@ public class MovieWallGenerator {
 
     public static void main(String[] args) throws FileNotFoundException {
         MovieWallGenerator generator = new MovieWallGenerator();
-        String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
-        generator.readFile(filePath);
-        for (int i = 0; i < actors.size(); i++) {
-            System.out.println("actor: " + actors.get(i) + " was in: ");
+        //String file = args[0] + "/tmdb_5000_credits.csv";
+        String file = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
+        generator.readFile(file);
+        /*for (int i = 0; i < actors.size(); i++) {
+            System.out.println("actor: " + actors.get(i));
             actors.get(i).getMovies();
-        }
+        }*/
+        //System.out.println("actor: " + actors.get(1));
+        //actors.get(1).getMovies();
     }
 }
 
