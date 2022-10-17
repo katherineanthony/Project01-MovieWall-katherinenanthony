@@ -11,6 +11,12 @@ public class MovieWallGenerator {
     private static ArrayList<Actor> actors = new ArrayList<>();
     private static ArrayList<String> movies = new ArrayList<>();
 
+    public void searchForActor(String userInput) {
+        for (int i = 0; i < actors.size(); i++) {
+
+        }
+    }
+
     public void readFile(String filePath) {
         int numMovies = 0;
         try {
@@ -21,10 +27,8 @@ public class MovieWallGenerator {
                 String[] title = line.split(",");
                 movies.add(numMovies, title[1]); // add movie to array at index of movie #
                 Movie movie = new Movie(); // does this need to be moved?
+                Actor actor = new Actor(); // is this in the wrong spot?
                 for (int i = 0; i < title.length; i++) {
-                    //String[] part = title[i].split(",");
-                    Actor actor = new Actor(); // is this in the wrong spot?
-
                     if (title[i].contains("character") || title[i].contains("job")) {
                         int index = title[i].indexOf(":");
                         String temp = title[i].substring(index + 4);
@@ -47,10 +51,8 @@ public class MovieWallGenerator {
                             name = title[i].substring(index + 4, title[i].length() - 2);
                         }
                         actor.setName(name);
-                        //actor.getMovies();
-                        //System.out.println("movie: " + movie);
                         actors.add(actor);
-                        actor = null;
+                        actor = new Actor();
                     }
                 }
                 numMovies++; // we get the correct values of movies
@@ -71,6 +73,10 @@ public class MovieWallGenerator {
         MovieWallGenerator generator = new MovieWallGenerator();
         String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
         generator.readFile(filePath);
+        for (int i = 0; i < actors.size(); i++) {
+            System.out.println("actor: " + actors.get(i) + " was in: ");
+            actors.get(i).getMovies();
+        }
     }
 }
 

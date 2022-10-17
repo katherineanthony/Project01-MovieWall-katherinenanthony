@@ -19,8 +19,10 @@ public class Actor {
         //System.out.println("movie: " + movie);
         boolean hasMovie = false;
         for (int i = 0; i < movies.size(); i++) {
-            if (movies.get(i) == movie && !hasMovie)
+            if (movies.get(i) == movie) {
                 hasMovie = true;
+                System.out.println("successful add");
+            }
         }
         if (!hasMovie)
             System.out.println("unsuccessful add");
