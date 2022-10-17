@@ -8,57 +8,56 @@ import java.util.Scanner;
 
 public class MovieWallGenerator {
 
-    public static void readFile(String filePath, ArrayList<Actor> actors, ArrayList<String> movies) {
+    private static ArrayList<Actor> actors = new ArrayList<>();
+    private static ArrayList<String> movies = new ArrayList<>();
+
+    public void readFile(String filePath) {
         int numMovies = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line = br.readLine();
+            line = br.readLine();
             while (line != null) {
+
                 String[] title = line.split(",");
                 movies.add(numMovies, title[1]); // add movie to array at index of movie #
                 //System.out.println(Arrays.toString(title));
 
                 for (int i = 0; i < title.length; i++) {
-                    String[] part = title[i].split(",");
+                    //String[] part = title[i].split(",");
                     Actor actor = new Actor();
                     Movie movie = new Movie();
-                    /* TODO: i think there's a problem with the naming of the actor/scope. the using
-                    or lifetime of Actor is not sustainable because it doesn't live throughout
-                    the finding of character and name.
-                     */
-                    for (int j = 0; j < part.length; j++) {
-                        //actor = new Actor();
-                        if (part[j].contains("character") || part[j].contains("job")) {
-                            int index = part[j].indexOf(":");
-                            String temp = part[j].substring(index + 4);
-                            String role;
-                            if (temp.contains("\"")) {
-                                role = temp.substring(0, temp.indexOf("\""));
-                            } else {
-                                role = part[j].substring(index + 4, part[j].length() - 2);
-                            }
-                            //Movie movie = new Movie(title[1], role);
-                            movie.setTitle(title[1]);
-                            movie.setRole(role);
-                            actor.addMovie(movie); // this works to some extent
-                            System.out.print("added Movie: "); // BUT WHERE DOES THE MOVIE GO ??
-                            actor.getMovies();
-                        } else if (part[j].contains("name")) {
-                            int index = part[j].indexOf(":");
-                            String temp = part[j].substring(index + 4, part[j].length() - 2);
-                            String name;
-                            if (temp.contains("\"")) {
-                                name = temp.substring(0, temp.indexOf("\""));
-                            } else {
-                                name = part[j].substring(index + 4, part[j].length() - 2);
-                            }
-                            actor.setName(name);
+                    if (title[i].contains("character") || title[i].contains("job")) {
+                        int index = title[i].indexOf(":");
+                        String temp = title[i].substring(index + 4);
+                        String role;
+                        if (temp.contains("\"")) {
+                            role = temp.substring(0, temp.indexOf("\""));
+                        } else {
+                            role = title[i].substring(index + 4, title[i].length() - 2);
                         }
-                        if (actor.getName() != null) {
-                            actors.add(actor);
-                            actor.getMovies();
-                            actor = new Actor();
+
+                        movie.setTitle(title[1]);
+                        movie.setRole(role);
+                        actor.addMovie(movie); // this works to some extent
+
+                        //actor.getMovies();
+                    } else if (title[i].contains("name")) {
+                        int index = title[i].indexOf(":");
+                        String temp = title[i].substring(index + 4, title[i].length() - 2);
+                        String name;
+                        if (temp.contains("\"")) {
+                            name = temp.substring(0, temp.indexOf("\""));
+                        } else {
+                            name = title[i].substring(index + 4, title[i].length() - 2);
                         }
+                        actor.setName(name);
+                        System.out.println(actor.toString());
+                    }
+                    if (actor.getName() != null) {
+                        actors.add(actor);
+                        //actor.getMovies();
+                        actor = null;
                     }
                 }
                 numMovies++; // we get the correct values of movies
@@ -76,10 +75,12 @@ public class MovieWallGenerator {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        ArrayList<Actor> actors = new ArrayList<>();
-        ArrayList<String> movies = new ArrayList<>();
+        MovieWallGenerator generator = new MovieWallGenerator();
         String filePath = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
-        readFile(filePath, actors, movies);
+        generator.readFile(filePath);
+    }
+}
+
         //System.out.println(movies.get(1));
         //System.out.println(actors.get(1));
 
@@ -118,6 +119,41 @@ public class MovieWallGenerator {
         else {
             System.out.println("There are no movies with this actor. Did you mean: ");
         }*/
-    }
-}
+        /* TODO: i think there's a problem with the naming of the actor/scope. the using
+                    or lifetime of Actor is not sustainable because it doesn't live throughout
+                    the finding of character and name.
+                    for (int j = 0; j < part.length; j++) {
+                        if (part[j].contains("character") || part[j].contains("job")) {
+                            int index = part[j].indexOf(":");
+                            String temp = part[j].substring(index + 4);
+                            String role;
+                            if (temp.contains("\"")) {
+                                role = temp.substring(0, temp.indexOf("\""));
+                            } else {
+                                role = part[j].substring(index + 4, part[j].length() - 2);
+                            }
+
+                            movie.setTitle(title[1]);
+                            movie.setRole(role);
+                            actor.addMovie(movie); // this works to some extent
+
+                            actor.getMovies();
+                        } else if (part[j].contains("name")) {
+                            int index = part[j].indexOf(":");
+                            String temp = part[j].substring(index + 4, part[j].length() - 2);
+                            String name;
+                            if (temp.contains("\"")) {
+                                name = temp.substring(0, temp.indexOf("\""));
+                            } else {
+                                name = part[j].substring(index + 4, part[j].length() - 2);
+                            }
+                            actor.setName(name);
+                        }
+                        if (actor.getName() != null) {
+                            actors.add(actor);
+                            //actor.getMovies();
+                            actor = null;
+                        }
+                    }*/
+
 
