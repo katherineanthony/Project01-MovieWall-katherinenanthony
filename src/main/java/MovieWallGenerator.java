@@ -29,13 +29,16 @@ public class MovieWallGenerator {
      * @return index of closet alphabetical user
      */
     public int searchForSimilarActor(String userInput) {
-
         int closest = Math.abs(actors.get(1).getName().compareToIgnoreCase(userInput));
         int smallestIndex = 0;
+
         for (int i = 0; i < actors.size(); i++) {
             if (actors.get(i).getName() != null) { // ignore null cases
+                // base case: they're off by such a close amount that one of them contains the other
                 if (userInput.contains(actors.get(i).getName()) || actors.get(i).getName().contains(userInput))
                     return i;
+                // otherwise look for the one that is closest to 0 (compareTo returns > 0 if after in alphabet
+                // or < 0 if before in alphabet
                 if (Math.abs(actors.get(i).getName().compareToIgnoreCase(userInput)) < closest) {
                     closest = Math.abs(actors.get(i).getName().compareToIgnoreCase(userInput));
                     smallestIndex = i;
@@ -82,28 +85,29 @@ public class MovieWallGenerator {
     public void readFile(String filePath) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
-            String header = br.readLine();
+            String header = br.readLine(); // eat the first line
             String line = br.readLine();
             while (line != null) {
-                String[] movieTitle = line.split(",");
-                String[] allActors = line.split("\\{");
+                String[] movieTitle = line.split(","); // split to get the movie title
+                String[] allActors = line.split("\\{"); // split to get each actor
 
                 for (int j = 0; j < allActors.length; j++) {
                     Movie movie = new Movie();
                     Actor actor = new Actor();
-                    String[] actorComponents = allActors[j].split(",");
+                    String[] actorComponents = allActors[j].split(","); // split to get actor's components
 
                     // we're within one actor:
                     for (int i = 0; i < actorComponents.length; i++) {
+                        // looking for name, character or job
                         if (actorComponents[i].contains("character") || actorComponents[i].contains("job")) {
                             int index = actorComponents[i].indexOf(":");
                             String temp = actorComponents[i].substring(index + 4);
                             String role = "";
-                            if (temp.contains("\""))
+                            if (temp.contains("\"")) // look for special cases with quotes or }
                                 role = temp.substring(0, temp.indexOf("\""));
                             else
                                 role = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
-                            if (role.equals(""))
+                            if (role.equals("")) // if there's a null at some point
                                 role = "unknown";
                             movie.setTitle(movieTitle[1]);
                             movie.setRole(role);
@@ -112,7 +116,7 @@ public class MovieWallGenerator {
                             int index = actorComponents[i].indexOf(":");
                             String temp = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
                             String name;
-                            if (temp.contains("\""))
+                            if (temp.contains("\"")) // look for special cases with quotes or }
                                 name = temp.substring(0, temp.indexOf("\""));
                             else
                                 name = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
@@ -135,7 +139,14 @@ public class MovieWallGenerator {
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    /**
+     * main method reads file calling readFile() and uses Scanner
+     * to get userInput and search for the desired Actor and print
+     * their movies.
+     *
+     * @param args takes file path from args (in run config)
+     */
+    public static void main(String[] args) {
         // set up:
         MovieWallGenerator generator = new MovieWallGenerator();
         String file = args[0] + "/tmdb_5000_credits.csv";
