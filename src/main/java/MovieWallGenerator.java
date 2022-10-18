@@ -3,8 +3,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class MovieWallGenerator {
@@ -25,14 +23,6 @@ public class MovieWallGenerator {
             }
         }
         return smallestIndex;
-    }
-
-    public void cleanUpActors() {
-        for (int i = 0; i < actors.size(); i++) {
-            if (actors.get(i).getName() == null) {
-                actors.remove(i);
-            }
-        }
     }
 
     public boolean searchForActor(String userInput) {
@@ -77,6 +67,9 @@ public class MovieWallGenerator {
                                 role = temp.substring(0, temp.indexOf("\""));
                             } else {
                                 role = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
+                            }
+                            if (role.equals("")) {
+                                role = "unknown";
                             }
                             movie.setTitle(movieTitle[1]);
                             movie.setRole(role);
