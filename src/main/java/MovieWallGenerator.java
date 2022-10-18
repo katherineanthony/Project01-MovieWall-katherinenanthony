@@ -28,6 +28,8 @@ public class MovieWallGenerator {
         int smallestIndex = 0;
         for (int i = 0; i < actors.size(); i++) {
             if (actors.get(i).getName() != null) { // ignore null cases
+                if (userInput.contains(actors.get(i).getName()) || actors.get(i).getName().contains(userInput))
+                    return i;
                 if (Math.abs(actors.get(i).getName().compareToIgnoreCase(userInput)) < closest) {
                     closest = Math.abs(actors.get(i).getName().compareToIgnoreCase(userInput));
                     smallestIndex = i;
@@ -110,10 +112,12 @@ public class MovieWallGenerator {
                                 name = temp.substring(0, temp.indexOf("\""));
                             else
                                 name = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
-                            actor.setName(name);
+                            if (name != null) {
+                                actor.setName(name);
+                            }
+                            //actor.setName(name);
                         }
                     }
-                    // TODO: check if the actor already exists in the List
                     actors.add(actor);
                 }
                 numMovies++;
