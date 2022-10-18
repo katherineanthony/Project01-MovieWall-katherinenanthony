@@ -24,8 +24,9 @@ public class MovieWallGenerator {
             String line = br.readLine();
             line = br.readLine();
             while (line != null) {
-                String[] title = line.split(",");
-                movies.add(numMovies, title[1]); // add movie to array at index of movie #
+                String[] movieTitle = line.split(",");
+                //System.out.println(line);
+                movies.add(numMovies, movieTitle[1]); // add movie to array at index of movie #
                 Movie movie = new Movie(); // does this need to be moved?
                 Actor actor = new Actor(); // is this in the wrong spot?
 
@@ -35,33 +36,64 @@ public class MovieWallGenerator {
                 - change how we split the line? (maybe at commas within the line, but after
                     the title we can do braces?)
                  */
+                String[] allActors = line.split("\\{");
+                for (int j = 0; j < allActors.length; j++) {
+                    System.out.println(allActors[j]);
+                    String[] actorComponents = allActors[j].split(",");
+                    // this is actually accurate but can only be used once we're within the actor's
+                    // actual {}
+                    for (int i = 0; i < actorComponents.length; i++) {
+                        if (actorComponents[i].contains("character") || actorComponents[i].contains("job")) {
+                            int index = actorComponents[i].indexOf(":");
+                            String temp = actorComponents[i].substring(index + 4);
+                            String role;
+                            if (temp.contains("\"")) {
+                                role = temp.substring(0, temp.indexOf("\""));
+                            } else {
+                                role = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
+                            }
+                            movie.setTitle(movieTitle[1]);
+                            movie.setRole(role);
+                            actor.addMovie(movie); // this works to some extent
+                        } else if (actorComponents[i].contains("name")) { // getting the name is accurate !
+                            int index = actorComponents[i].indexOf(":");
+                            String temp = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
+                            String name;
+                            if (temp.contains("\"")) {
+                                name = temp.substring(0, temp.indexOf("\""));
+                            } else {
+                                name = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
+                            }
+                            actor.setName(name);
+                            actors.add(actor);
+                            actor = new Actor();
+                        }
 
-                for (int i = 0; i < title.length; i++) {
-                    if (title[i].contains("character") || title[i].contains("job")) {
-                        int index = title[i].indexOf(":");
-                        String temp = title[i].substring(index + 4);
-                        String role;
-                        if (temp.contains("\"")) {
-                            role = temp.substring(0, temp.indexOf("\""));
-                        } else {
-                            role = title[i].substring(index + 4, title[i].length() - 2);
-                        }
-                        movie.setTitle(title[1]);
-                        movie.setRole(role);
-                        actor.addMovie(movie); // this works to some extent
-                    } else if (title[i].contains("name")) { // getting the name is accurate !
-                        int index = title[i].indexOf(":");
-                        String temp = title[i].substring(index + 4, title[i].length() - 2);
-                        String name;
-                        if (temp.contains("\"")) {
-                            name = temp.substring(0, temp.indexOf("\""));
-                        } else {
-                            name = title[i].substring(index + 4, title[i].length() - 2);
-                        }
-                        actor.setName(name);
-                        actors.add(actor);
-                        actor = new Actor();
-                    }
+//                    if (title[i].contains("character") || title[i].contains("job")) {
+//                        int index = title[i].indexOf(":");
+//                        String temp = title[i].substring(index + 4);
+//                        String role;
+//                        if (temp.contains("\"")) {
+//                            role = temp.substring(0, temp.indexOf("\""));
+//                        } else {
+//                            role = title[i].substring(index + 4, title[i].length() - 2);
+//                        }
+//                        movie.setTitle(title[1]);
+//                        movie.setRole(role);
+//                        actor.addMovie(movie); // this works to some extent
+//                    } else if (title[i].contains("name")) { // getting the name is accurate !
+//                        int index = title[i].indexOf(":");
+//                        String temp = title[i].substring(index + 4, title[i].length() - 2);
+//                        String name;
+//                        if (temp.contains("\"")) {
+//                            name = temp.substring(0, temp.indexOf("\""));
+//                        } else {
+//                            name = title[i].substring(index + 4, title[i].length() - 2);
+//                        }
+//                        actor.setName(name);
+//                        actors.add(actor);
+//                        actor =
+                }
                 }
                 numMovies++; // we get the correct values of movies
                 try {
@@ -82,10 +114,10 @@ public class MovieWallGenerator {
         //String file = args[0] + "/tmdb_5000_credits.csv";
         String file = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
         generator.readFile(file);
-        /*for (int i = 0; i < actors.size(); i++) {
-            System.out.println("actor: " + actors.get(i));
-            actors.get(i).getMovies();
-        }*/
+//        for (int i = 0; i < actors.size(); i++) {
+//            System.out.println("actor: " + actors.get(i));
+//            actors.get(i).getMovies();
+//        }
         //System.out.println("actor: " + actors.get(1));
         //actors.get(1).getMovies();
     }
