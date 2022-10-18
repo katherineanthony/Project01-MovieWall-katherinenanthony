@@ -12,7 +12,11 @@ public class MovieWallGenerator {
     private static ArrayList<String> movies = new ArrayList<>();
 
     public void searchForActor(String userInput) {
+        System.out.println("You said: " + userInput);
         for (int i = 0; i < actors.size(); i++) {
+            if (userInput.equalsIgnoreCase(actors.get(i).getName())) {
+                actors.get(i).getMovies();
+            }
 
         }
     }
@@ -32,7 +36,7 @@ public class MovieWallGenerator {
                 for (int j = 0; j < allActors.length; j++) {
                     Movie movie = new Movie(); // does this need to be moved?
                     Actor actor = new Actor(); // is this in the wrong spot?
-                    System.out.println("one actor: " + allActors[j]);
+                    //System.out.println("one actor: " + allActors[j]);
                     String[] actorComponents = allActors[j].split(",");
 
                     // we're within one actor:
@@ -81,15 +85,14 @@ public class MovieWallGenerator {
     public static void main(String[] args) throws FileNotFoundException {
         MovieWallGenerator generator = new MovieWallGenerator();
         //String file = args[0] + "/tmdb_5000_credits.csv";
+
         String file = "/Users/katherineanthony/IdeaProjects/CS245/Project01-MovieWall-katherinenanthony/src/main/resources/tmdb_5000_credits.csv";
         generator.readFile(file);
-        //System.out.println("actor: " + actors.get(1));
-        //actors.get(1).getMovies();
-        for (int i = 0; i < actors.size(); i++) {
-            System.out.println("actor: " + actors.get(i));
-            actors.get(i).getMovies();
-        }
-
+        System.out.println("Welcome to the Movie Wall!");
+        System.out.println("Enter an actor's name: ");
+        Scanner scan = new Scanner(System.in);
+        String userInput = scan.nextLine();
+        generator.searchForActor(userInput);
     }
 }
 
