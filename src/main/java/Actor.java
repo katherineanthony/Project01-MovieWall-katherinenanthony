@@ -32,17 +32,12 @@ public class Actor {
         this.name = name;
     }
 
-    // do we need to sort the movies at some point?
-
     @Override
     public String toString() {
         return this.name;
     }
 
     public void getMovies() {
-        // print out the movies that the actor has been in
-        //if (movies.size() == 0)
-            //System.out.println("movies.size() == 0");
         for (int i = 0; i < movies.size(); i++)
             System.out.println(movies.get(i));
     }

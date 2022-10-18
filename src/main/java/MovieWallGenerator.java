@@ -12,7 +12,30 @@ public class MovieWallGenerator {
     private static ArrayList<Actor> actors = new ArrayList<>();
     private static ArrayList<String> movies = new ArrayList<>();
 
-    public void searchForActor(String userInput) {
+    public int searchForSimilarActor(String userInput) {
+        //System.out.println(actors.get(1).getName());
+        int closest = Math.abs(actors.get(1).getName().compareToIgnoreCase(userInput));
+        int smallestIndex = 0;
+        for (int i = 0; i < actors.size(); i++) {
+            if (actors.get(i).getName() != null) {
+                if (Math.abs(actors.get(i).getName().compareToIgnoreCase(userInput)) < closest) {
+                    closest = Math.abs(actors.get(i).getName().compareToIgnoreCase(userInput));
+                    smallestIndex = i;
+                }
+            }
+        }
+        return smallestIndex;
+    }
+
+    public void cleanUpActors() {
+        for (int i = 0; i < actors.size(); i++) {
+            if (actors.get(i).getName() == null) {
+                actors.remove(i);
+            }
+        }
+    }
+
+    public boolean searchForActor(String userInput) {
         System.out.println("You said: " + userInput);
         boolean hasActor = false;
         for (int i = 0; i < actors.size(); i++) {
@@ -22,16 +45,18 @@ public class MovieWallGenerator {
             }
         }
         if (!hasActor) {
-            System.out.println("No such actor. Did you mean: ");
+            return false;
         }
+        else
+            return true;
     }
 
     public void readFile(String filePath) {
         int numMovies = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
+            String header = br.readLine();
             String line = br.readLine();
-            line = br.readLine();
             while (line != null) {
                 String[] movieTitle = line.split(",");
                 movies.add(numMovies, movieTitle[1]); // add movie to array at index of movie #
@@ -55,8 +80,8 @@ public class MovieWallGenerator {
                             }
                             movie.setTitle(movieTitle[1]);
                             movie.setRole(role);
-                            actor.addMovie(movie); // this works to some extent
-                        } else if (actorComponents[i].contains("name")) { // getting the name is accurate !
+                            actor.addMovie(movie);
+                        } else if (actorComponents[i].contains("name")) {
                             int index = actorComponents[i].indexOf(":");
                             String temp = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
                             String name;
@@ -96,7 +121,17 @@ public class MovieWallGenerator {
                 "(or \"EXIT\" to quit): ");
         String userInput = scan.nextLine();
         while (!userInput.equalsIgnoreCase("exit")) {
-            generator.searchForActor(userInput);
+            if (!generator.searchForActor(userInput)) {
+                System.out.println("No such actor. Did you mean: ");
+                int suggested = (generator.searchForSimilarActor(userInput));
+                System.out.println(actors.get(suggested));
+                System.out.println("Enter Y or N:");
+                userInput = scan.nextLine();
+                if (userInput.compareTo("Y") == 0) {
+                    userInput = actors.get(suggested).getName();
+                    generator.searchForActor(userInput);
+                }
+            }
             System.out.println("Enter an actor's name " +
                     "(or \"EXIT\" to quit): ");
             userInput = scan.nextLine();
