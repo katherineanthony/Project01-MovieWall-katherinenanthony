@@ -1,3 +1,9 @@
+/**
+ * project01-MovieWallGenerator
+ *
+ * @author Katherine Anthony 10-18-2022
+ */
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,7 +18,6 @@ import java.util.Scanner;
 public class MovieWallGenerator {
 
     private static ArrayList<Actor> actors = new ArrayList<>();
-    private static ArrayList<String> movies = new ArrayList<>();
 
     /**
      * This method uses Math.abs and compareTo to loop through the ArrayList of
@@ -24,6 +29,7 @@ public class MovieWallGenerator {
      * @return index of closet alphabetical user
      */
     public int searchForSimilarActor(String userInput) {
+
         int closest = Math.abs(actors.get(1).getName().compareToIgnoreCase(userInput));
         int smallestIndex = 0;
         for (int i = 0; i < actors.size(); i++) {
@@ -74,14 +80,12 @@ public class MovieWallGenerator {
      * @param filePath of file to be read
      */
     public void readFile(String filePath) {
-        int numMovies = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String header = br.readLine();
             String line = br.readLine();
             while (line != null) {
                 String[] movieTitle = line.split(",");
-                movies.add(numMovies, movieTitle[1]); // add movie to array at index of movie #
                 String[] allActors = line.split("\\{");
 
                 for (int j = 0; j < allActors.length; j++) {
@@ -112,15 +116,12 @@ public class MovieWallGenerator {
                                 name = temp.substring(0, temp.indexOf("\""));
                             else
                                 name = actorComponents[i].substring(index + 4, actorComponents[i].length() - 2);
-                            if (name != null) {
+                            if (name != null)
                                 actor.setName(name);
-                            }
-                            //actor.setName(name);
                         }
                     }
                     actors.add(actor);
                 }
-                numMovies++;
                 try {
                     line = br.readLine();
                 } catch (IOException e) {
@@ -139,6 +140,7 @@ public class MovieWallGenerator {
         MovieWallGenerator generator = new MovieWallGenerator();
         String file = args[0] + "/tmdb_5000_credits.csv";
         generator.readFile(file);
+
         System.out.println("Welcome to the Movie Wall!");
 
         // user interaction:
