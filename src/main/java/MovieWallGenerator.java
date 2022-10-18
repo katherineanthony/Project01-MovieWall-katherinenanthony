@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -20,6 +21,44 @@ public class MovieWallGenerator {
     private static ArrayList<Actor> actors = new ArrayList<>();
 
     /**
+     * This method compares the userInput by first and last name (part)
+     * so that it will return an actor if it has the same first or last name.
+     * If there are no actors with the same first or last name, it returns
+     * -1 and the other method will try to find another similar user.
+     *
+     * @param userInput to compare against
+     * @return index of most accurate actor in ArrayList (-1 if none)
+     */
+    public int searchForAlt (String userInput) {
+        int closestIndex = -1;
+        String[] componentsOfUI = userInput.split(" ");
+        for (int i = 0; i < actors.size(); i++) {
+            if (actors.get(i).getName() != null) {
+                String[] componentsOfI = actors.get(i).getName().split(" ");
+                for (int j = 0, k = 0; j < componentsOfI.length && k < componentsOfUI.length; j++, k++) {
+                    // if there are any exact matches with first and last names in the right spot,
+                    // return that index immediately
+                    if (componentsOfI[j].equalsIgnoreCase(componentsOfUI[k]))
+                        return i;
+                }
+                // otherwise, loop over to see if there are matches with first and last names
+                // in different orders
+                for (int j = 0; j < componentsOfI.length; j++) {
+                    for (int k = 0; k < componentsOfUI.length; k++) {
+                        if (componentsOfI[j].equalsIgnoreCase(componentsOfUI[k]))
+                            closestIndex = i;
+                    }
+                }
+            }
+        }
+        return closestIndex;
+    }
+
+    /**
+     * This method first calls searchForAlt to see if the userInput matches any of the
+     * actors by first or last name component, and if it returns -1 (meaning that there
+     * are no matches by whole names) it continues with the algo.
+     *
      * This method uses Math.abs and compareTo to loop through the ArrayList of
      * actors to find the actor that is closest alphabetically to the userInput
      * when the userInput does not match anything in the actor ArrayList. It returns
@@ -31,6 +70,10 @@ public class MovieWallGenerator {
     public int searchForSimilarActor(String userInput) {
         int closest = Math.abs(actors.get(1).getName().compareToIgnoreCase(userInput));
         int smallestIndex = 0;
+
+        // check to see if the input matches by component (whole name) before going by Math
+        if (searchForAlt(userInput) != -1)
+            return searchForAlt(userInput);
 
         for (int i = 0; i < actors.size(); i++) {
             if (actors.get(i).getName() != null) { // ignore null cases

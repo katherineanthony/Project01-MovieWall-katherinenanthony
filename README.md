@@ -19,8 +19,12 @@ This class has one instance variable, an ArrayList that holds actors.
 
 This class has multiple methods:
 
+- `searchForAlt(String userInput)`
+In this method, we loop over each actor in the Arraylsit and compare it against the userInput but splitting at the spaces. This means that we compare by first and last names (and sometimes middle) to check if there are exact matches or if they meant an actor with a different first or last name.
+This method returns the index if there is a match that is found, or -1 if there is no match, and `searchForSimilarActor()` will continue to compute the next suggested Actor.
+
 - `searchForSimilarActor(String userInput)`
-In this method, we loop over the actor ArrayList and compare the UserInput against each actor, trying to find the one that is alphabetically closest. Using compareTo and Math.abs, we have two different variables, closest and closestIndex. We will return closestIndex as the Actor in the ArrayList that is alphabetically closest to the input. Closest is the calculation using compareTo to find which is the closest.
+After calling searchForAlt, if we do not find an Actor with that method (if it returns -1), we then loop over the actor ArrayList and compare the UserInput against each actor, trying to find the one that is alphabetically closest. Using compareTo and Math.abs, we have two different variables, closest and closestIndex. We will return closestIndex as the Actor in the ArrayList that is alphabetically closest to the input. Closest is the calculation using compareTo to find which is the closest.
 
 - `searchForActor(String userInput)`
 In this method, we compare the userInput to each Actor in the ArrayList, and if we find the actor, we print it using the `getMovies()` method from the Actor class, and then return true. If we cannot find the actor, we return false.
