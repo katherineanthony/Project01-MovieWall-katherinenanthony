@@ -1,3 +1,6 @@
+/**
+ * Movie class has String title and String role.
+ */
 public class Movie {
     private String title;
     private String role;

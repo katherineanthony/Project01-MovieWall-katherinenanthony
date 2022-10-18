@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Actor class has an ArrayList of Movie objects, and a String name.
+ */
 public class Actor {
     private String name;
     private ArrayList<Movie> movies;
@@ -14,14 +17,6 @@ public class Actor {
 
     public void addMovie(Movie movie) {
         movies.add(movie);
-//        //System.out.println("movie: " + movie);
-//        boolean hasMovie = false;
-//        for (int i = 0; i < movies.size(); i++) {
-//            if (movies.get(i) == movie)
-//                hasMovie = true;
-//        }
-//        if (!hasMovie)
-//            System.out.println("unsuccessful add");
     }
 
     public void setName(String name) {
